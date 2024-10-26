@@ -7,7 +7,7 @@ blog = Blueprint('blog', __name__)
 def dashboard():
     # get all pincode from database
     all_pincode = Pincode.query.filter(Pincode.pincode == 700135).all()
-    print(all_pincode)
+    # print(all_pincode)
     data = []
     data = {'pincode':all_pincode}
 
