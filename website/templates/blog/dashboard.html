@@ -2,4 +2,14 @@
 {% block title %}Dashboard{% endblock %}
 {% block body %}
 <h2>Blog</h2>
+<div class="container">
+    {% for pincode in data['pincode'] %}
+    <div class="row">
+
+        {{ pincode.pincode }}  :: {{ pincode.officename }}
+        
+    </div>
+    {% endfor %}
+</div>
+
 {% endblock %}
