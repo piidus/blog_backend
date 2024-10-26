@@ -1,0 +1,4 @@
+flask
+MySQL
+Flask-SQLAlchemy
+pandas
