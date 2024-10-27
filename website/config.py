@@ -1,4 +1,5 @@
 import os
+
 DEBUG = True
 SECRET_KEY = os.urandom(32)
 
@@ -10,3 +11,6 @@ db_path = os.environ.get('DB_PATH')
 
 # path
 SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{db_user}:{db_user_pass}@{db_path}:3306/{db_name}'
+
+# Logging
+LOG_FILENAME = os.path.join(os.path.dirname(__file__), 'app.log')

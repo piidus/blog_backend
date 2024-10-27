@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template
 from .models import db, Pincode
+from flask import current_app
 
 blog = Blueprint('blog', __name__)
+
 
 @blog.route('/dashboard')
 def dashboard():
@@ -11,5 +13,10 @@ def dashboard():
     data = []
     data = {'pincode':all_pincode}
 
+
+   
+    current_app.logger.info("info message")
+    current_app.logger.warning("warning message")
+    current_app.logger.error("error message")
 
     return render_template('blog/dashboard.html', data=data)

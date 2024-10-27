@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 from .models import db
-
+from .log_setup import setup_logger
 
 def create_app():
     #create the object of Flask
@@ -9,6 +9,8 @@ def create_app():
     app.config.from_pyfile('config.py')
 
     db.init_app(app)
+    # set logger
+    setup_logger(app)
 
     with app.app_context():
         db.create_all()
