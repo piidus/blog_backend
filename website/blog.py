@@ -1,6 +1,11 @@
-from flask import Blueprint, render_template
-from .models import db, Pincode
-from flask import current_app
+try:
+    from flask import Blueprint, render_template, current_app
+    from .models import db, Pincode, log
+except Exception as e:
+    log.error(e)
+else:
+    log.info("model imported")
+    
 
 blog = Blueprint('blog', __name__)
 
@@ -16,7 +21,8 @@ def dashboard():
 
    
     current_app.logger.info("info message")
-    current_app.logger.warning("warning message")
-    current_app.logger.error("error message")
+    # current_app.logger.warning("warning message")
+    # current_app.logger.error("error message")
 
     return render_template('blog/dashboard.html', data=data)
+

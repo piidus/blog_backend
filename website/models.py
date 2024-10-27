@@ -1,13 +1,14 @@
 try:
-    from flask import current_app
     from flask_sqlalchemy import SQLAlchemy
     from sqlalchemy import Column, Integer, String, Date, Boolean, Text, ForeignKey, Numeric, Double, JSON, DateTime, Numeric
+    from .log_setup import setup_logger
 except Exception as e:
     print("error in model.py import section", e)
 
+
 db = SQLAlchemy()
-# log = current_app.logger
-# pincode model
+log = setup_logger()
+
 
 class Pincode(db.Model):
     __tablename__ = 'pincode'
