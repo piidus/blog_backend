@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Blog Page{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='blog/blog-page.css') }}">
+{% endblock %}
+{% block body %}
+<h2>Blog Page</h2>
+<!-- address secion -->
+<div class="section">
+  <select name="pincode" id="">Pincode</select>
+  <select name="Post Office" id="">Post Office</select>
+  <label for="Village">Village</label>
+  <input type="text" class="text" id="Village">
+  <button type="submit">Edit</button>
+  <button type="submit">Save</button>
+</div>
+<hr>
+<!-- Tag Section   -->
+<div class="section">
+<label for="tags">tags</label>
+<input type="text" class="text" id="tags">
+</div>
+<!-- Title Section -->
+ <hr>
+<div class="section">
+    <label for="title">Title</label>
+    <input type="text" class="text" id="title">
+    <button type="submit">Edit</button>
+  <button type="submit">Save</button>
+</div>
+<hr>
+<!-- Body Section -->
+<div class="section">
+    <label for="body">Body</label>
+    <textarea class="text" id="body"></textarea>
+</div>
+<hr>
+<!-- Body Section -->
+<div class="row">
+
+</div>
+
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='blog/blog-page.js') }}"></script>
+{% endblock %}

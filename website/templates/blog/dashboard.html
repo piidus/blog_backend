@@ -3,13 +3,25 @@
 {% block body %}
 <h2>Blog</h2>
 <div class="container">
-    {% for pincode in data['pincode'] %}
-    <div class="row">
-
-        {{ pincode.pincode }}  :: {{ pincode.officename }}
-        
-    </div>
-    {% endfor %}
+     <!-- Create New Blog Title -->
+    <div class="new_title">
+<label for="title">New Blog Title</label>
+<select name="language" id="language-select">
+ <option value="en" selected>English</option>
+  <option value="bn">Bengali</option>
+  <option value="hi">Hindi</option>
+</select>
+<input type="text" name="title" id="title-input" style="width: 70%;" placeholder="Enter title here">
+<button type="submit">Create</button>
+ </div>
 </div>
+<script>
+document.getElementById('language-select').addEventListener('change', function() {
+const selectedLanguage = this.value;
+const titleInput = document.getElementById('title-input');
+titleInput.setAttribute('lang', selectedLanguage);
+});
+
+</script>
 
 {% endblock %}

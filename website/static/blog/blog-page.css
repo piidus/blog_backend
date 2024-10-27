@@ -1,0 +1,18 @@
+.section {
+    display: flex;                  /* Use flexbox for horizontal layout */
+    align-items: center;           /* Center items vertically */
+    border: 1px solid #000;       /* Outline box */
+    padding: 10px;                 /* Space inside the box */
+    gap: 10px;                     /* Space between items */
+    border-radius: 5px;           /* Rounded corners (optional) */
+}
+
+select,
+input.text,
+button {
+    padding: 5px 10px;            /* Padding inside inputs and buttons */
+}
+
+button {
+    cursor: pointer;               /* Change cursor on hover */
+}
