@@ -2,25 +2,39 @@
 {% block title %}Dashboard{% endblock %}
 {% block body %}
 <h2>Blog</h2>
-<div class="container">
-     <!-- Create New Blog Title -->
-    <div class="new_title">
-<label for="title">New Blog Title</label>
-<select name="language" id="language-select">
- <option value="en" selected>English</option>
-  <option value="bn">Bengali</option>
-  <option value="hi">Hindi</option>
-</select>
-<input type="text" name="title" id="title-input" style="width: 70%;" placeholder="Enter title here">
-<button type="submit">Create</button>
- </div>
-</div>
+<form action="/dashboard" method="post">
+    <div class="container">
+        <!-- Create New Blog Title -->
+        <div class="new_title">
+            <label for="title">New Blog Title</label>
+            <select name="language" id="language-select" required>
+                <option value="en" selected>English</option>
+                <option value="bn">Bengali</option>
+                <option value="hi">Hindi</option>
+            </select>
+            <input type="text" name="title" id="title-input" style="width: 70%;" placeholder="Enter title here">
+            <button type="submit" name="create">Create</button>
+        </div>
+    </div>
+</form>
+
+<!-- show all blog titles as a url-->
+ {% for blog  in data %}
+ {{loop.index}}
+ <form action="/dashboard" method="post">
+ <a href="/blog-page/{{blog.u_id}}">{{blog.title}}</a>
+ <button type="submit" name="delete" value="{{blog.id}}">Delete</button>
+</form>
+ <br>
+ {% endfor %}
+
+
 <script>
-document.getElementById('language-select').addEventListener('change', function() {
-const selectedLanguage = this.value;
-const titleInput = document.getElementById('title-input');
-titleInput.setAttribute('lang', selectedLanguage);
-});
+    document.getElementById('language-select').addEventListener('change', function () {
+        const selectedLanguage = this.value;
+        const titleInput = document.getElementById('title-input');
+        titleInput.setAttribute('lang', selectedLanguage);
+    });
 
 </script>
 

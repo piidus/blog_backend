@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import logging
 from .models import db, log 
 
@@ -21,5 +21,10 @@ def create_app():
     app.register_blueprint(blog, url_prefix='/')
 
     # app.logger.info("Logger has been set up and is writing to %s", app.config['LOG_FILENAME'])
+
+    # Custom 404 error handler
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
 
     return app
