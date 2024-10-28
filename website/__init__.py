@@ -6,8 +6,10 @@ def create_app():
     #create the object of Flask
     app  = Flask(__name__)
     app.config.from_pyfile('config.py')
-
-    db.init_app(app)
+    try:
+        db.init_app(app)
+    except Exception as e:
+        log.error(e)
     app.logger = log
     # Configure Flask's internal logger to only show warnings or higher
     app.logger.setLevel(logging.DEBUG)

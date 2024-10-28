@@ -2,24 +2,55 @@
 {% block title %}Blog Page{% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='blog/blog-page.css') }}">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js"
+  integrity="sha512-eSeh0V+8U3qoxFnK3KgBsM69hrMOGMBy3CNxq/T4BArsSQJfKVsKb5joMqIPrNMjRQSTl4xG8oJRpgU2o9I7HQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css"
+  integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- for rich text -->
+<!-- Summernote CSS -->
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet"> -->
+
+ <!-- Custom CSS for Text Area Styling -->
+ <style>
+  #editor {
+      border: 1px solid #ced4da;
+      padding: 10px;
+      min-height: 200px;
+      overflow-y: auto;
+  }
+  .toolbar button {
+      margin-right: 5px;
+  }
+</style>
+
+
+
 {% endblock %}
 {% block body %}
 <h2>Blog Page</h2>
 <!-- address secion -->
 <div class="section">
+  <!-- invisible input hold blog id  -->
+  <input type="hidden" id="blog_uid" value="{{data.blog_details.u_id}}">
   <!-- <select name="pincode" id="">Pincode</select> -->
   <!-- chosen library needed -->
-  <select data-placeholder="Choose a name..." class="ch" name="institute">
-    <option></option>
+   
+  <select data-placeholder="Choose a name..." class="ch" id="pincode" onchange="pincodeChange()">POST OFFICE
+    <option>{{data.blog_details.blog_pincode or 0}}</option>
   
-    {% for pin in data.all_pincode.pincode %}
-    <option value="{{pin}}">{{pin}}</option>
+    {% for row in data.all_pincode %}
+    <option value="{{row.pincode}}" >{{row.pincode}}</option>
     {% endfor %}
-  <select name="Post Office" id="">Post Office</select>
+  </select>
+  <select class="ch" name="Post Office" id="postOffice">Post Office
+    <option value="">{{data.blog_details.blog_postoffice or 0}}</option>
+  </select>
   <label for="Village">Village</label>
-  <input type="text" class="text" id="Village">
-  <button type="submit">Edit</button>
-  <button type="submit">Save</button>
+  <input type="text" class="text" id="Village" value="{{data.blog_details.blog_village or 0}}">
+  <button type="submit" onclick="addressSave()">Save</button>
 </div>
 <hr>
 <!-- Tag Section   -->
@@ -32,26 +63,50 @@
 <div class="section">
     <label for="title">Title</label>
     <input type="text" class="text" id="title" value="{{data.blog_details.title}}">
-    <button type="submit">Edit</button>
-  <button type="submit">Save</button>
+    <!-- <button type="submit">Edit</button>
+  <button type="submit">Save</button> -->
 </div>
 <hr>
 <!-- Body Section -->
-<div class="section">
+<!-- <div class="section">
     <label for="body">Body</label>
-    <textarea class="text" id="body"></textarea>
+    <textarea class="text" id="body">{{data.blog_details.blog_pincode}}</textarea>
+   
+</div> -->
+<div class="container mt-5">
+  <h2>Custom Rich Text Editor</h2>
+
+  <div class="toolbar">
+    <button data-command="bold">Bold</button>
+    <button data-command="italic">Italic</button>
+    <button data-command="underline">Underline</button>
+    <button data-command="foreColor" data-value="red">Red Text</button>
+    <button data-command="insertUnorderedList">Bullet List</button>
+    <button data-command="insertOrderedList">Numbered List</button>
+    <button id="addLink">Add Hyperlink</button>
+    <button id="addHashtag">Add Hashtag</button>
+</div>
+<div id="editor" contenteditable="true" style="border: 1px solid #ccc; min-height: 200px; padding: 10px;">
+  {% if data.blog_details.body %}
+  {{data.blog_details.body  | safe}}
+  {% else %}
+  <h3>Add Content</h3>
+  {% endif %}
+</div>
+<button id="submitContent">Submit</button>
+
 </div>
 <hr>
 <!-- Body Section -->
 <div class="row">
 
 </div>
-{% for pin in data.all_pincode.pincode %}
-{{pin}}
-{% endfor %}
-
+<!-- Custom Script for Toolbar and AJAX Submission -->
+<script>
+  
+</script>
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='blog/blog-page.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 {% endblock %}

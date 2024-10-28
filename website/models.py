@@ -16,8 +16,12 @@ class Blog(db.Model):
     language = Column(String(15))
     u_id = Column(Text)
     title = Column(String(500))
+    blog_pincode = Column(Integer)  
+    blog_postoffice = Column(String(300))
+    blog_village = Column(String(500))
     body = Column(Text)
     date = Column(DateTime, default=datetime.now())
+    images = Column(JSON)
 
 class Pincode(db.Model):
     __tablename__ = 'pincode'
