@@ -9,22 +9,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css"
   integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA=="
   crossorigin="anonymous" referrerpolicy="no-referrer" />
-<!-- for rich text -->
-<!-- Summernote CSS -->
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet"> -->
 
- <!-- Custom CSS for Text Area Styling -->
- <style>
-  #editor {
-      border: 1px solid #ced4da;
-      padding: 10px;
-      min-height: 200px;
-      overflow-y: auto;
-  }
-  .toolbar button {
-      margin-right: 5px;
-  }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='blog/text-area-style.css') }}">
+<!-- for rich text -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
 
 
 
@@ -37,12 +26,12 @@
   <input type="hidden" id="blog_uid" value="{{data.blog_details.u_id}}">
   <!-- <select name="pincode" id="">Pincode</select> -->
   <!-- chosen library needed -->
-   
+
   <select data-placeholder="Choose a name..." class="ch" id="pincode" onchange="pincodeChange()">POST OFFICE
     <option>{{data.blog_details.blog_pincode or 0}}</option>
-  
+
     {% for row in data.all_pincode %}
-    <option value="{{row.pincode}}" >{{row.pincode}}</option>
+    <option value="{{row.pincode}}">{{row.pincode}}</option>
     {% endfor %}
   </select>
   <select class="ch" name="Post Office" id="postOffice">Post Office
@@ -55,58 +44,161 @@
 <hr>
 <!-- Tag Section   -->
 <div class="section">
-<label for="tags">tags</label>
-<input type="text" class="text" id="tags">
+  <label for="tags">tags</label>
+  <input type="text" class="text" id="tags">
 </div>
 <!-- Title Section -->
- <hr>
+<hr>
 <div class="section">
-    <label for="title">Title</label>
-    <input type="text" class="text" id="title" value="{{data.blog_details.title}}">
-    <!-- <button type="submit">Edit</button>
+  <label for="title">Title</label>
+  <input type="text" class="text" id="title" value="{{data.blog_details.title}}">
+  <!-- <button type="submit">Edit</button>
   <button type="submit">Save</button> -->
 </div>
 <hr>
 <!-- Body Section -->
-<!-- <div class="section">
-    <label for="body">Body</label>
-    <textarea class="text" id="body">{{data.blog_details.blog_pincode}}</textarea>
-   
-</div> -->
-<div class="container mt-5">
-  <h2>Custom Rich Text Editor</h2>
+<div class="area-container">
+  <h1>Rich Text Editor Tool</h1>
+  <div class="options">
+    <!-- Text Format -->
+    <button id="bold" class="option-button format">
+      <i class="fas fa-bold"></i>
+    </button>
+    <button id="italic" class="option-button format">
+      <i class="fas fa-italic"></i>
+    </button>
+    <button id="underline" class="option-button format">
+      <i class="fas fa-underline"></i>
+    </button>
+    <button id="strikethrough" class="option-button format">
+      <i class="fas fa-strikethrough"></i>
+    </button>
+    <button id="superscript" class="option-button script">
+      <i class="fas fa-superscript"></i>
+    </button>
+    <button id="subscript" class="option-button script">
+      <i class="fas fa-subscript"></i>
+    </button>
 
-  <div class="toolbar">
-    <button data-command="bold">Bold</button>
-    <button data-command="italic">Italic</button>
-    <button data-command="underline">Underline</button>
-    <button data-command="foreColor" data-value="red">Red Text</button>
-    <button data-command="insertUnorderedList">Bullet List</button>
-    <button data-command="insertOrderedList">Numbered List</button>
-    <button id="addLink">Add Hyperlink</button>
-    <button id="addHashtag">Add Hashtag</button>
-</div>
-<div id="editor" contenteditable="true" style="border: 1px solid #ccc; min-height: 200px; padding: 10px;">
+    <!-- List -->
+    <button id="insertOrderedList" class="option-button">
+      <i class="fas fa-list-ol"></i>
+    </button>
+    <button id="insertUnorderedList" class="option-button">
+      <i class="fas fa-list-ul"></i>
+    </button>
+
+    <!-- Undo/Redo -->
+    <button id="undo" class="option-button">
+      <i class="fas fa-undo"></i>
+    </button>
+    <button id="redo" class="option-button">
+      <i class="fas fa-redo"></i>
+    </button>
+
+    <!-- Link -->
+    <button id="createLink" class="option-button">
+      <i class="fas fa-link"></i>
+    </button>
+    <button id="unlink" class="option-button">
+      <i class="fas fa-unlink"></i>
+    </button>
+
+    <!-- Alignment -->
+    <button id="justifyLeft" class="option-button align">
+      <i class="fas fa-align-left"></i>
+    </button>
+    <button id="justifyCenter" class="option-button align">
+      <i class="fas fa-align-center"></i>
+    </button>
+    <button id="justifyRight" class="option-button align">
+      <i class="fas fa-align-right"></i>
+    </button>
+    <button id="justifyFull" class="option-button align">
+      <i class="fas fa-align-justify"></i>
+    </button>
+    <button id="indent" class="option-button spacing">
+      <i class="fas fa-indent"></i>
+    </button>
+    <button id="outdent" class="option-button spacing">
+      <i class="fas fa-outdent"></i>
+    </button>
+
+    <!-- Headings -->
+    <select id="formatBlock" class="option-button">
+      <option value="H1">H1</option>
+      <option value="H2">H2</option>
+      <option value="H3">H3</option>
+      <option value="H4">H4</option>
+      <option value="H5">H5</option>
+      <option value="H6">H6</option>
+    </select>
+
+    <!-- Font Size -->
+    <select id="fontSize" class="option-button">
+      <option value="1">Size 1</option>
+      <option value="2">Size 2</option>
+      <option value="3" selected>Size 3</option>
+      <option value="4">Size 4</option>
+      <option value="5">Size 5</option>
+      <option value="6">Size 6</option>
+    </select>
+
+    <!-- Font Name -->
+    <select id="fontName" class="option-button" style="width: 185px;">
+      <option value="Arial">Arial</option>
+      <option value="Verdana">Verdana</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Garamond">Garamond</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier New">Courier New</option>
+      <option value="cursive">Cursive</option>
+    </select>
+
+    <!-- Image Insertion -->
+    <button id="insertImageButton" class="option-button" title="Insert Image">
+      <i class="fas fa-image"></i>
+    </button>
+    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+
+    <!-- Font Color -->
+    <!-- <label class="color-picker" title="Font Color">
+      <input type="color" id="fontColor" style="display: none;">
+      <i class="fas fa-font" style="color: black;"></i>
+  </label> -->
+
+    <!-- Highlighter -->
+    <!-- <label class="color-picker" title="Text Highlight">
+      <input type="color" id="highlightColor" style="display: none;">
+      <i class="fas fa-highlighter" style="color: yellow;"></i>
+  </label> -->
+
+    <!-- Language Selection -->
+    <select id="languageSelect" class="option-button" title="Select Language">
+      <option value="en" selected>English</option>
+      <option value="bn">Bengali</option>
+      <option value="hi">Hindi</option>
+    </select>
+  </div>
+  <div id="text-input" contenteditable="true">
   {% if data.blog_details.body %}
-  {{data.blog_details.body  | safe}}
+    {{data.blog_details.body | safe}}
   {% else %}
-  <h3>Add Content</h3>
+    Write something here...
   {% endif %}
-</div>
-<button id="submitContent">Submit</button>
+  </div>
 
+  <!-- Save Button -->
+  <button id="submitContent" class="option-button" type="submit">
+    <i class="fas fa-save"></i>
+  </button>
 </div>
+
 <hr>
-<!-- Body Section -->
-<div class="row">
 
-</div>
-<!-- Custom Script for Toolbar and AJAX Submission -->
-<script>
-  
-</script>
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='blog/blog-page.js') }}"></script>
+<script src="{{ url_for('static', filename='blog/text-area-script.js') }}"></script>
 
 {% endblock %}
