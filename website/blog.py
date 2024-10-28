@@ -100,9 +100,9 @@ def save_address():
 @blog.route('/submit-content', methods=[ 'POST'])
 def save_content():
     request_data = request.get_json()
-    print(request_data)
+    # print(request_data)
     content = request_data['content']
-    print(content)
+    # print(content)
     uid = request_data['uid']
     if '0' in [content, uid]:
         return jsonify({'success': False, 'message': 'All fields are required!'}), 400

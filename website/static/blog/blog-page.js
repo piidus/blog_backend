@@ -5,9 +5,10 @@ const uid = $("#blog_uid").val();
 
 
 // Handle Submit Button Click
+const normalizeContent = (text) => text.normalize("NFC");
+
 $('#submitContent').click(function() {
-    const content = $('#text-input').html();
-    console.log(content);
+    const content = normalizeContent($('#text-input').html());
     fetch('/submit-content', {
         method: 'POST',
         headers: {
@@ -15,16 +16,37 @@ $('#submitContent').click(function() {
         },
         body: JSON.stringify({ content: content, uid: uid }),
     }).then(response => response.json()).then(data => {
-        if (data['success'] == false) {
-            alert('An error occurred: ' + data['error']);
+        if (data['success'] === false) {
+            alert('An error occurred: ' + data['message']);
         } else {
             alert('Content submitted successfully!');
         }
-    })
-    .catch(error => {
+    }).catch(error => {
         console.error('Error:', error);
     });
 });
+
+
+// $('#submitContent').click(function() {
+//     const content = $('#text-input').html();
+//     console.log(content);
+//     fetch('/submit-content', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ content: content, uid: uid }),
+//     }).then(response => response.json()).then(data => {
+//         if (data['success'] == false) {
+//             alert('An error occurred: ' + data['error']);
+//         } else {
+//             alert('Content submitted successfully!');
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//     });
+// });
 
 
 
