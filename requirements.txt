@@ -2,3 +2,5 @@ flask
 PyMySQL 
 Flask-SQLAlchemy
 pandas
+Flask-Login
+Flask-Mail

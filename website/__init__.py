@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import logging
-from .models import db, log 
+from flask_login import LoginManager
+from .models import db, log, User
 
 def create_app():
     #create the object of Flask
@@ -22,7 +23,19 @@ def create_app():
     from  .blog import blog
     app.register_blueprint(blog, url_prefix='/')
 
+    from .auth import auth
+    app.register_blueprint(auth, url_prefix='/')
+
     # app.logger.info("Logger has been set up and is writing to %s", app.config['LOG_FILENAME'])
+
+    # Initialize the login manager
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
 
     # Custom 404 error handler
     @app.errorhandler(404)

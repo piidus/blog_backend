@@ -1,7 +1,8 @@
 try:
     from flask_sqlalchemy import SQLAlchemy
-    from sqlalchemy import Column, Integer, String, Date, Boolean, Text, ForeignKey, Numeric, Double, JSON, DateTime, Numeric
+    from sqlalchemy import Column, Integer, String, Boolean, Text, JSON, DateTime
     from datetime import datetime
+    from flask_login import UserMixin
     from .log_setup import setup_logger
 except Exception as e:
     print("error in model.py import section", e)
@@ -41,3 +42,23 @@ class Pincode(db.Model):
     related_headoffice = Column(String(300))
     longitude = Column(String(300))
     latitude = Column(String(300))
+
+
+
+
+# user model
+class User(db.Model, UserMixin):
+    id = Column(Integer, primary_key=True)
+    email = Column(String(150), unique=True)
+    password = Column(String(210))
+    first_name = Column(String(150))
+    last_name = Column(String(150))
+    phone = Column(String(13))
+    role = Column(String(10), default= 'user', nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    active = Column(Boolean(), default= True)
+
+
+
+
+
