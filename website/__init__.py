@@ -1,12 +1,14 @@
 from flask import Flask, render_template
 import logging
 from flask_login import LoginManager
-from .models import db, log, User
+from .models import db, log, User, mail
 
 def create_app():
     #create the object of Flask
     app  = Flask(__name__)
     app.config.from_pyfile('config.py')
+    mail.init_app(app)
+    
     try:
         db.init_app(app)
     except Exception as e:

@@ -12,7 +12,7 @@ function signup() {
         .then((data) => {
             code = data['authcode'];
             // console.log("Success:", data);
-            console.log(code);
+            // console.log(code);
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -30,37 +30,37 @@ function checkCode() {
         $("#staticBackdrop").modal("hide");
         // create post request to backend
         var signupForm = document.getElementById("signupFormid");
-        console.log(signupForm);    
+        // console.log(signupForm);    
 
-        // signupForm.addEventListener("submit", function (event) {
-        //     event.preventDefault();
-
-            // Get form data
-            const formData = new FormData(signupForm);
-            // console.log(formData);
-            // Convert FormData to a regular object
-            const formObject = Object.fromEntries(formData.entries());
-                // console.log(formObject);
-            // Send form data to backend as JSON
-            fetch("/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formObject), // Convert the object to JSON string
+        // Get form data
+        const formData = new FormData(signupForm);
+        // console.log(formData);
+        // Convert FormData to a regular object
+        const formObject = Object.fromEntries(formData.entries());
+        // console.log(formObject);
+        // Send form data to backend as JSON
+        fetch("/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formObject), // Convert the object to JSON string
+        })
+            .then(response => response.json())
+            .then(data => {
+                // console.log("Success:", data);
+                if (data['success'] == true) {
+                    window.location.href = "/login";
+                }
+                // if success = false alert
+                if (data['success'] == false) {
+                    alert(data['message']);
+                }
+                // Open the next modal or handle success as needed
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                    // if success = false alert
-                    if (data['success'] == false) {
-                        alert(data['message']);
-                    }
-                    // Open the next modal or handle success as needed
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+            .catch((error) => {
+                console.error("Error:", error);
+            });
         // });
 
 

@@ -3,6 +3,7 @@ try:
     from sqlalchemy import Column, Integer, String, Boolean, Text, JSON, DateTime
     from datetime import datetime
     from flask_login import UserMixin
+    from flask_mail import Mail
     from .log_setup import setup_logger
 except Exception as e:
     print("error in model.py import section", e)
@@ -10,6 +11,8 @@ except Exception as e:
 
 db = SQLAlchemy()
 log = setup_logger()
+mail = Mail()
+
 
 class Blog(db.Model):
     __tablename__ = 'blog'
