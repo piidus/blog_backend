@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}writterboard{% endblock %}
 {% block body %}
 <h2>Blog</h2>
-<form action="/dashboard" method="post">
+<form action="/writterboard" method="post">
     <div class="container">
         <!-- Create New Blog Title -->
         <div class="new_title">
@@ -21,7 +21,7 @@
 <!-- show all blog titles as a url-->
  {% for blog  in data %}
  {{loop.index}}
- <form action="/dashboard" method="post">
+ <form action="/writterboard" method="post">
  <a href="/blog-page/{{blog.u_id}}">{{blog.title}}</a>
  <button type="submit" name="delete" value="{{blog.id}}">Delete</button>
 </form>

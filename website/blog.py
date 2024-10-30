@@ -10,8 +10,8 @@ except Exception as e:
 blog = Blueprint('blog', __name__)
 
 # add new blog title and delete
-@blog.route('/dashboard', methods=['GET', 'POST'])
-def dashboard():
+@blog.route('/writterboard', methods=['GET', 'POST'])
+def writterboard():
     # print(request.form)
     if request.method == 'POST' and request.form.get('create')=='':
         title = request.form.get('title')
@@ -48,7 +48,7 @@ def dashboard():
         data = Blog.query.all()
     except Exception as e:
         data = []
-    return render_template('blog/dashboard.html', data=data)
+    return render_template('blog/writterboard.html', data=data)
 
 
 @blog.route('/blog-page/<string:blog_id>', methods=['GET', 'POST'])

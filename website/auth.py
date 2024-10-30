@@ -36,7 +36,7 @@ def login():
         if user:
             if user.password == password:
                 login_user(user)
-                return redirect(url_for('blog.dashboard'))
+                return redirect(url_for('blog.writterboard'))
             else:
                 flash('Incorrect password, please try again.', 'danger')
         else:
