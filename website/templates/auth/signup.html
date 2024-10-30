@@ -2,11 +2,12 @@
 {% block title %}Signup{% endblock %}
 {% block body %}
 <h2>Signup</h2>
-<form action="/signup" method="post">
-    <div class="container">
+
+<form id="signupFormid">
+    <div class="container" id="signupForm">
         <div class="form-group mb-3">
         <label for="email"><b>Email</b></label>
-        <input type="email" class="form-control" placeholder="Enter Email" name="email" required>
+        <input type="email" class="form-control" placeholder="Enter Email" name="email" id="email" required>
         </div>
         <div class="form-group mb-3">
         <label for="firstName"><b>First Name</b></label>
@@ -24,7 +25,37 @@
         <label for="password"><b>Password</b></label>
         <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Signup</button>
+        
     </div>
 </form>
+<button class="btn btn-primary mb-2" onclick="signup()">Signup</button>
+
+
+    <!-- modal section -->
+     
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Mail Authentication</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <small>e-mail sent, check your inbox/spam</small>
+          <!-- a small input that takes user input -->
+          <input type="text" class="form-control" placeholder="Enter Code" id="code" onkeyup="checkCode()">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+{% block js %}
+    <script src="{{ url_for('static', filename='auth/signup.js') }}"></script>
 {% endblock %}
