@@ -44,8 +44,10 @@ def create_app():
     def page_not_found(e):
         return render_template('404.html'), 404
     
-    # make folders in root
-    IMAGE_FOLDER = app.config['IMAGE_FOLDER']   
-    # os.makedirs(app.config['IMAGE_FOLDER'], exist_ok=True)
-    os.makedirs(os.path.join(IMAGE_FOLDER), exist_ok=True)
+    # # make folders in root
+    # IMAGE_FOLDER = app.config['IMAGE_FOLDER']   
+    # os.makedirs(os.path.join(IMAGE_FOLDER), exist_ok=True)
+    # Create the folder if it doesn't exist
+    image_folder_path = app.config['IMAGE_FOLDER']
+    os.makedirs(image_folder_path, exist_ok=True)
     return app

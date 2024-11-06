@@ -23,5 +23,11 @@ SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{db_user}:{db_user_pass}@{db_path}:3
 # Logging
 LOG_FILENAME = os.path.join(os.path.dirname(__file__), 'app.log')
 
-# folder settings
-IMAGE_FOLDER = os.path.join(os.path.dirname(__file__), "blog_images/images")
+# # folder settings
+# IMAGE_FOLDER = os.path.join(os.path.dirname(__file__), "blog_images/images")
+
+# Folder settings
+# Set BASE_DIR to the parent of the project directory
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+# print(BASE_DIR)
+IMAGE_FOLDER = os.path.join(BASE_DIR, "blog_images", "images")
