@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Blog Writer Page{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='blog/blog-page.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='blog/blog-writer.css') }}">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js"
   integrity="sha512-eSeh0V+8U3qoxFnK3KgBsM69hrMOGMBy3CNxq/T4BArsSQJfKVsKb5joMqIPrNMjRQSTl4xG8oJRpgU2o9I7HQ=="
@@ -23,7 +23,7 @@
 <!-- address secion -->
 <div class="section">
   <!-- invisible input hold blog id  -->
-  <input type="hidden" id="blog_uid" value="{{data.blog_details.u_id}}">
+  <input type="hidden" name="blog_id" id="blog_uid" value="{{data.blog_details.u_id}}">
   <!-- <select name="pincode" id="">Pincode</select> -->
   <!-- chosen library needed -->
 <div>
@@ -199,10 +199,17 @@
 </div>
 
 <hr>
+<!-- image section -->
+<div class="section" id="image-section">
+  <!-- <form action="/save-image" method="post" enctype="multipart/form-data"> -->
+<input type="file" id="imageInput1">
+<button class="option-button" onclick="saveImage()">Save Image</button>
+<!-- </form> -->
+</div>
 
 {% endblock %}
 {% block js %}
-<script src="{{ url_for('static', filename='blog/blog-page.js') }}"></script>
+<script src="{{ url_for('static', filename='blog/blog-writer.js') }}"></script>
 <script src="{{ url_for('static', filename='blog/text-area-script.js') }}"></script>
 
 {% endblock %}

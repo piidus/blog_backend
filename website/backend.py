@@ -1,6 +1,10 @@
+from flask import url_for
+
+
 try:
     from flask import Blueprint, render_template, current_app, request, flash, jsonify
-    import uuid
+    import uuid, os
+    from werkzeug.utils import secure_filename
     from .models import db, Pincode, log, Blog
 except Exception as e:
     log.error(e)
@@ -51,6 +55,19 @@ def writterboard():
     return render_template('blog/writterboard.html', data=data)
 
 
+# save image    
+@backend.route('/save-image', methods=['POST'])
+def save_image():
+    if request.method == 'POST':  
+        request_data = request.files['image'] 
+          
+        print(request_data)
+        # save to image folder
+        request_data.save(os.path.join(current_app.config['IMAGE_FOLDER'], request_data.filename))
+        blog_id = request.form.get('uid')
+        print(blog_id)
+        return jsonify({'success': True, 'message': 'Image saved successfully!'}), 200
+
 @backend.route('/blog-page/<string:blog_id>', methods=['GET', 'POST'])
 def blog_page(blog_id):  
     blog_details = Blog.query.filter(Blog.u_id == blog_id).first()
@@ -62,7 +79,7 @@ def blog_page(blog_id):
 
 @backend.route('/get-postoffice', methods=[ 'POST'])
 def get_postoffice():
-    print(request.get_json())
+    # print(request.get_json())
     request_data = request.get_json()
     pincode = request_data['pincode']
     data = Pincode.query.with_entities(Pincode.officename).filter(Pincode.pincode == pincode).all()

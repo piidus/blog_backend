@@ -1,7 +1,36 @@
 // uid
-const uid = $("#blog_uid").val();
+// const uid = $("#blog_uid").val();
+const currentUrl = window.location.pathname;
+// console.log(currentUrl.split("/")[2]);
+const uid = currentUrl.split("/")[2];
+// save image
+function saveImage() {
+    const imageInput = document.getElementById('imageInput1');
+    const imageFile = imageInput.files[0];
+    // console.log(imageInput);
 
-// text editor
+    if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        formData.append('uid', uid);
+
+        fetch('/save-image', {
+            method: 'POST',
+            body: formData,
+        }).then(response => response.json()).then(data => {
+            if (data['success'] === true) {
+                alert('Image saved successfully!');
+            } else {
+                alert('An error occurred: ' + data['message']);
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    } else {
+        alert('Please select an image file.');
+    }
+}
+
 
 
 // Handle Submit Button Click
@@ -74,6 +103,8 @@ function addressSave() {
         }
     });
 }
+
+
 
 
 // on pincode change call all post office
