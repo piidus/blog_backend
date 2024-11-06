@@ -7,10 +7,10 @@ except Exception as e:
 
     
 
-blog = Blueprint('blog', __name__)
+backend = Blueprint('backend', __name__)
 
 # add new blog title and delete
-@blog.route('/writterboard', methods=['GET', 'POST'])
+@backend.route('/writterboard', methods=['GET', 'POST'])
 def writterboard():
     # print(request.form)
     if request.method == 'POST' and request.form.get('create')=='':
@@ -51,17 +51,18 @@ def writterboard():
     return render_template('blog/writterboard.html', data=data)
 
 
-@blog.route('/blog-page/<string:blog_id>', methods=['GET', 'POST'])
+@backend.route('/blog-page/<string:blog_id>', methods=['GET', 'POST'])
 def blog_page(blog_id):  
     blog_details = Blog.query.filter(Blog.u_id == blog_id).first()
     # print(all_pincode)
     all_pincode = Pincode.query.filter(Pincode.statename == "WEST BENGAL").all()
     # print(all_pincode)
     data = {'blog_details': blog_details, 'all_pincode': all_pincode}
-    return render_template('blog/blog-page.html', data=data)
+    return render_template('blog/blog-writer.html', data=data)
 
-@blog.route('/get-postoffice', methods=[ 'POST'])
+@backend.route('/get-postoffice', methods=[ 'POST'])
 def get_postoffice():
+    print(request.get_json())
     request_data = request.get_json()
     pincode = request_data['pincode']
     data = Pincode.query.with_entities(Pincode.officename).filter(Pincode.pincode == pincode).all()
@@ -72,7 +73,7 @@ def get_postoffice():
 
 
 # save or update address
-@blog.route('/save-address', methods=[ 'POST'])
+@backend.route('/save-address', methods=[ 'POST'])
 def save_address():
     request_data = request.get_json()
     pincode = request_data['pincode']
@@ -97,7 +98,7 @@ def save_address():
 
 
 # save content
-@blog.route('/submit-content', methods=[ 'POST'])
+@backend.route('/submit-content', methods=[ 'POST'])
 def save_content():
     request_data = request.get_json()
     # print(request_data)

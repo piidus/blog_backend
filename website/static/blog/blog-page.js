@@ -91,8 +91,11 @@ function pincodeChange() {
     })
     .then((response) => response.json())
     .then((data) => {
+        //console.log(data);
         var postOffices = data[0]['offices'];
         // console.log(postOffices);
+        // remove previous optons
+        $("#postOffice").empty();
         // Get a reference to the select element
         var selectElement = $("#postOffice");
         // Create and append options to the select element

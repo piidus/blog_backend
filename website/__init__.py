@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import logging
+import logging, os
 from flask_login import LoginManager
 from .models import db, log, User, mail
 
@@ -22,8 +22,8 @@ def create_app():
 
 
     # register the blueprints
-    from  .blog import blog
-    app.register_blueprint(blog, url_prefix='/')
+    from  .backend import backend
+    app.register_blueprint(backend, url_prefix='/')
 
     from .auth import auth
     app.register_blueprint(auth, url_prefix='/')
@@ -43,5 +43,9 @@ def create_app():
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('404.html'), 404
-
+    
+    # make folders in root
+    IMAGE_FOLDER = app.config['IMAGE_FOLDER']   
+    # os.makedirs(app.config['IMAGE_FOLDER'], exist_ok=True)
+    os.makedirs(os.path.join(IMAGE_FOLDER), exist_ok=True)
     return app

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Blog Page{% endblock %}
+{% block title %}Blog Writer Page{% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='blog/blog-page.css') }}">
 
@@ -26,7 +26,7 @@
   <input type="hidden" id="blog_uid" value="{{data.blog_details.u_id}}">
   <!-- <select name="pincode" id="">Pincode</select> -->
   <!-- chosen library needed -->
-
+<div>
   <select data-placeholder="Choose a name..." class="ch" id="pincode" onchange="pincodeChange()">POST OFFICE
     <option>{{data.blog_details.blog_pincode or 0}}</option>
 
@@ -38,8 +38,12 @@
     <option value="">{{data.blog_details.blog_postoffice or 0}}</option>
   </select>
   <label for="Village">Village</label>
-  <input type="text" class="text" id="Village" value="{{data.blog_details.blog_village or 0}}">
-  <button type="submit" onclick="addressSave()">Save</button>
+  <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
+  <button style="size: 100%;" type="submit" onclick="addressSave()">Save</button> 
+</div>
+
+  <label for="Village">District</label>
+  <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
 </div>
 <hr>
 <!-- Tag Section   -->
