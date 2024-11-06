@@ -1,9 +1,7 @@
-from flask import url_for
-
 
 try:
-    from flask import Blueprint, render_template, current_app, request, flash, jsonify
-    import uuid, os
+    from flask import Blueprint, render_template, current_app, request, flash, jsonify, send_from_directory
+    import uuid, os, json
     from werkzeug.utils import secure_filename
     from .models import db, Pincode, log, Blog
 except Exception as e:
@@ -54,18 +52,49 @@ def writterboard():
         data = []
     return render_template('blog/writterboard.html', data=data)
 
-
+# serve image
+# Route to serve images from the external directory
+@backend.route('/blog_images/<path:filename>')
+def blog_images(filename):
+    return send_from_directory(current_app.config['IMAGE_FOLDER'], filename)
 # save image    
 @backend.route('/save-image', methods=['POST'])
 def save_image():
     if request.method == 'POST':  
         request_data = request.files['image'] 
-          
-        print(request_data)
-        # save to image folder
-        request_data.save(os.path.join(current_app.config['IMAGE_FOLDER'], request_data.filename))
         blog_id = request.form.get('uid')
-        print(blog_id)
+        blog = Blog.query.filter(Blog.u_id == blog_id).first()
+        # convert image to as path
+        url_path = os.path.join(current_app.config['IMAGE_FOLDER'], secure_filename(request_data.filename)).replace('\\', '/')
+    #    save image
+        # save to image folder
+        request_data.save(os.path.join(current_app.config['IMAGE_FOLDER'], secure_filename(request_data.filename)))
+        # image name save as json
+        # check if any image exists then get the image serial no and add 1
+        if blog.images:
+            images = blog.images
+            existing_json = json.loads(blog.images)
+            
+            # print(images)
+            if len(images) > 0:
+                last_key = [key for key in existing_json.keys()][-1]
+                serial_no = int(last_key) + 1
+                existing_json.update({str(serial_no): url_path})
+            else:
+                serial_no = 1
+                existing_json = {str(serial_no): url_path}
+        else:
+            serial_no = 1
+            existing_json = {str(serial_no): url_path}
+        # save as json            
+        try:
+            blog.images = json.dumps(existing_json)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Something went wrong!'}), 500
+        # print(request_data)
+        
         return jsonify({'success': True, 'message': 'Image saved successfully!'}), 200
 
 @backend.route('/blog-page/<string:blog_id>', methods=['GET', 'POST'])
@@ -74,7 +103,15 @@ def blog_page(blog_id):
     # print(all_pincode)
     all_pincode = Pincode.query.filter(Pincode.statename == "WEST BENGAL").all()
     # print(all_pincode)
-    data = {'blog_details': blog_details, 'all_pincode': all_pincode}
+    # images list
+    if blog_details.images:
+        images = json.loads(blog_details.images)
+        for key, value in images.items():
+            print(key, value)
+        image_urls = [value.split('/')[-1] for key, value in images.items()]
+    else:
+        image_urls = []  # Collect all image URLs
+    data = {'blog_details': blog_details, 'all_pincode': all_pincode, 'image_urls': image_urls}
     return render_template('blog/blog-writer.html', data=data)
 
 @backend.route('/get-postoffice', methods=[ 'POST'])

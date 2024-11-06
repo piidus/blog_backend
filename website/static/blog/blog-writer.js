@@ -19,6 +19,8 @@ function saveImage() {
             body: formData,
         }).then(response => response.json()).then(data => {
             if (data['success'] === true) {
+                // reset image input
+                imageInput.value = '';
                 alert('Image saved successfully!');
             } else {
                 alert('An error occurred: ' + data['message']);

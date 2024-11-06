@@ -26,21 +26,21 @@
   <input type="hidden" name="blog_id" id="blog_uid" value="{{data.blog_details.u_id}}">
   <!-- <select name="pincode" id="">Pincode</select> -->
   <!-- chosen library needed -->
-<div>
-  <select data-placeholder="Choose a name..." class="ch" id="pincode" onchange="pincodeChange()">POST OFFICE
-    <option>{{data.blog_details.blog_pincode or 0}}</option>
+  <div>
+    <select data-placeholder="Choose a name..." class="ch" id="pincode" onchange="pincodeChange()">POST OFFICE
+      <option>{{data.blog_details.blog_pincode or 0}}</option>
 
-    {% for row in data.all_pincode %}
-    <option value="{{row.pincode}}">{{row.pincode}}</option>
-    {% endfor %}
-  </select>
-  <select class="ch" name="Post Office" id="postOffice">Post Office
-    <option value="">{{data.blog_details.blog_postoffice or 0}}</option>
-  </select>
-  <label for="Village">Village</label>
-  <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
-  <button style="size: 100%;" type="submit" onclick="addressSave()">Save</button> 
-</div>
+      {% for row in data.all_pincode %}
+      <option value="{{row.pincode}}">{{row.pincode}}</option>
+      {% endfor %}
+    </select>
+    <select class="ch" name="Post Office" id="postOffice">Post Office
+      <option value="">{{data.blog_details.blog_postoffice or 0}}</option>
+    </select>
+    <label for="Village">Village</label>
+    <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
+    <button style="size: 100%;" type="submit" onclick="addressSave()">Save</button>
+  </div>
 
   <label for="Village">District</label>
   <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
@@ -185,11 +185,11 @@
     </select>
   </div>
   <div id="text-input" contenteditable="true">
-  {% if data.blog_details.body %}
+    {% if data.blog_details.body %}
     {{data.blog_details.body | safe}}
-  {% else %}
+    {% else %}
     Write something here...
-  {% endif %}
+    {% endif %}
   </div>
 
   <!-- Save Button -->
@@ -202,10 +202,25 @@
 <!-- image section -->
 <div class="section" id="image-section">
   <!-- <form action="/save-image" method="post" enctype="multipart/form-data"> -->
-<input type="file" id="imageInput1">
-<button class="option-button" onclick="saveImage()">Save Image</button>
-<!-- </form> -->
+  <input type="file" id="imageInput1">
+  <button class="option-button" onclick="saveImage()">Save Image</button>
+  <!-- </form> -->
 </div>
+<!-- show images -->
+<!-- Display Image Previews -->
+{% if data.image_urls %}
+
+<div class="image-gallery">
+  {% for image_filename in data.image_urls %}
+  <div class="image-preview">
+    <img src="{{ url_for('backend.blog_images', filename=image_filename) }}" alt="Blog Image" width="200">
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<p>No images available for this blog.</p>
+{% endif %}
 
 {% endblock %}
 {% block js %}
