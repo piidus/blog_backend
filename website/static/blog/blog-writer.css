@@ -1,18 +1,23 @@
 .section {
-    display: flex;                  /* Use flexbox for horizontal layout */
-    align-items: center;           /* Center items vertically */
-    border: 1px solid #000;       /* Outline box */
-    padding: 10px;                 /* Space inside the box */
-    gap: 10px;                     /* Space between items */
-    border-radius: 5px;           /* Rounded corners (optional) */
-}
-
-select,
-input.text,
-button {
-    padding: 5px 10px;            /* Padding inside inputs and buttons */
-}
-
-button {
-    cursor: pointer;               /* Change cursor on hover */
-}
+    display: flex;
+    align-items: center;
+    border: 1px solid #000;
+    padding: 10px;
+    gap: 10px;
+    border-radius: 5px;
+  
+    /* Improve accessibility for screen readers */
+    flex-wrap: wrap; /* Allow elements to wrap to a new line on smaller screens */
+  }
+  
+  .section select,
+  .section input.text,
+  .section button {
+    padding: 5px 10px;
+    flex: 1; /* Make elements flexible to fill available space */
+  }
+  
+  .section button {
+    cursor: pointer;
+    flex: 0 0 auto; /* Prevent button from stretching */
+  }

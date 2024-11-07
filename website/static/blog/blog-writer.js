@@ -3,6 +3,25 @@
 const currentUrl = window.location.pathname;
 // console.log(currentUrl.split("/")[2]);
 const uid = currentUrl.split("/")[2];
+
+// delete image
+function deleteImage(imageName) {
+    fetch('/delete-image', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 'imageName': imageName, 'uid': uid }),
+    }).then(response => response.json()).then(data => {
+        if (data['success'] === true) {
+            alert('Image deleted successfully!');
+        } else {
+            alert('An error occurred: ' + data['message']);
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+}
 // save image
 function saveImage() {
     const imageInput = document.getElementById('imageInput1');
@@ -88,17 +107,22 @@ function addressSave() {
     var pincode = $("#pincode").val();
     var postOffice = $("#postOffice").val();
     var village = $("#Village").val();
+    var district = $("#district").val();
     // alert(pincode + postOffice + village);
     fetch("/save-address", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ pincode: pincode, postOffice: postOffice, village: village, uid: uid }),
+        body: JSON.stringify({ pincode: pincode, postOffice: postOffice, village: village, district: district, uid: uid }),
     })
     .then((response) => response.json())
     .then((data) => {
         console.log(data);
+        // if success = true alert
+        if (data['success'] == true) {
+            alert(data['message']);
+        }
         // if success = false alert
         if (data['success'] == false) {
             alert(data['message']);
@@ -124,9 +148,11 @@ function pincodeChange() {
     })
     .then((response) => response.json())
     .then((data) => {
-        //console.log(data);
+        // console.log(data);
         var postOffices = data[0]['offices'];
         // console.log(postOffices);
+        var districts = data[1]['districts'];
+        // console.log(districts);
         // remove previous optons
         $("#postOffice").empty();
         // Get a reference to the select element
@@ -139,6 +165,19 @@ function pincodeChange() {
                    
                 selectElement.append(option);
             });
+
+        // Get a reference to the select element
+        var selectElement1 = $("#district");
+        // Create and append options to the select element
+            districts.forEach(district => {
+                console.log(district);
+                const option = $("<option ></option>")
+                    .val(district)
+                    .text(district);
+                   
+                selectElement1.append(option);
+            });
+        
         
         // Add the change event listener to the select element
             selectElement.on('change', function() {
@@ -147,7 +186,7 @@ function pincodeChange() {
             });
         // update the chosen dropdown
         selectElement.trigger('chosen:updated');
-        
+        selectElement1.trigger('chosen:updated');
     })
     .catch((error) => {
         console.error("Error:", error);
@@ -164,7 +203,7 @@ function postOfficeChange(postOffice) {
 // dropdown selection
 $(document).ready(function () {
     $(".ch").chosen({
-      width: "30%",
+      width: "100%",
       no_results_text: "Oops, nothing found!",
       allow_single_deselect: true,
     });

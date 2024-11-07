@@ -4,14 +4,7 @@
     margin: 0;
     box-sizing: border-box;
 }
-/* body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-} */
+
 .area-container {
     background-color: #ffffff;
     /* max-width: 710px; */
@@ -30,7 +23,7 @@
     gap: 15px;
     margin-bottom: 15px;
 }
-button {
+.area-container button {
     height: 40px;
     width: 40px;
     border-radius: 5px;
@@ -42,7 +35,7 @@ button {
 button:hover {
     background-color: #e0e0e0;
 }
-select {
+.area-container select {
     padding: 10px;
     border: 1px solid #dddddd;
     border-radius: 5px;

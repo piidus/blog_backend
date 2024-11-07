@@ -23,6 +23,7 @@ class Blog(db.Model):
     blog_pincode = Column(Integer)  
     blog_postoffice = Column(String(300))
     blog_village = Column(String(500))
+    blog_district = Column(String(500))
     body = Column(Text)
     date = Column(DateTime, default=datetime.now())
     images = Column(JSON)

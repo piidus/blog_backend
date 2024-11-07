@@ -26,24 +26,35 @@
   <input type="hidden" name="blog_id" id="blog_uid" value="{{data.blog_details.u_id}}">
   <!-- <select name="pincode" id="">Pincode</select> -->
   <!-- chosen library needed -->
-  <div>
-    <select data-placeholder="Choose a name..." class="ch" id="pincode" onchange="pincodeChange()">POST OFFICE
-      <option>{{data.blog_details.blog_pincode or 0}}</option>
-
-      {% for row in data.all_pincode %}
-      <option value="{{row.pincode}}">{{row.pincode}}</option>
-      {% endfor %}
-    </select>
-    <select class="ch" name="Post Office" id="postOffice">Post Office
-      <option value="">{{data.blog_details.blog_postoffice or 0}}</option>
-    </select>
-    <label for="Village">Village</label>
-    <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
-    <button style="size: 100%;" type="submit" onclick="addressSave()">Save</button>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <label for="pincode">Pincode</label>
+        <select data-placeholder="Choose a name..." class="form-control ch" id="pincode" name="pincode" onchange="pincodeChange()">
+          <option>{{data.blog_details.blog_pincode or 0}}</option>
+          {% for row in data.all_pincode %}
+          <option value="{{row.pincode}}">{{row.pincode}}</option>
+          {% endfor %}
+        </select>
+  
+        <label for="postOffice">Post Office</label>
+        <select class="form-control ch" name="postOffice" id="postOffice">
+          <option value="">{{data.blog_details.blog_postoffice or 0}}</option>
+        </select>
+  
+        <label for="district">District</label>
+        <select class="form-control ch" name="district" id="district">
+          <option value="">{{data.blog_details.blog_district or 0}}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="Village">Village</label>
+        <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
+  
+        <button style="size: 100%;" type="submit" class="btn btn-primary" onclick="addressSave()">Save</button>
+      </div>
+    </div>
   </div>
-
-  <label for="Village">District</label>
-  <input type="text" class="form-control" id="Village" value="{{data.blog_details.blog_village or 0}}">
 </div>
 <hr>
 <!-- Tag Section   -->
@@ -213,7 +224,11 @@
 <div class="image-gallery">
   {% for image_filename in data.image_urls %}
   <div class="image-preview">
-    <img src="{{ url_for('backend.blog_images', filename=image_filename) }}" alt="Blog Image" width="200">
+    <img src="{{ url_for('backend.blog_images', filename=image_filename) }}" alt="Blog Image" width="200"
+      style="border: 1px solid #ccc;">
+    <button class="delete-image-button" onclick="deleteImage('{{ image_filename }}')">
+      <i class="fas fa-trash-alt"></i>
+    </button>
   </div>
   {% endfor %}
 </div>
