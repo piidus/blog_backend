@@ -59,8 +59,17 @@
 <hr>
 <!-- Tag Section   -->
 <div class="section">
-  <label for="tags">tags</label>
-  <input type="text" class="text" id="tags">
+  {% if data.all_tags %}
+  {% for tag in data.all_tags %}
+  <span class="tag" >{{tag}}</span>
+  <button type="button" onclick="tagDelete('{{tag}}')" class="delete-image-button">
+    <i class="fas fa-trash-alt" style="color: red;"></i>
+  </button>
+  {% endfor %}
+  {% endif %}
+  <label for="tags">New Tag</label> 
+  <input type="text" class="text" id="tags" value="0" style="width: 30px;">
+  <button type="button" onclick="tagSave('{{data.blog_details.u_id}}')">Save</button>
 </div>
 <!-- Title Section -->
 <hr>

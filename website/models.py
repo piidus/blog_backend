@@ -1,6 +1,7 @@
 try:
     from flask_sqlalchemy import SQLAlchemy
-    from sqlalchemy import Column, Integer, String, Boolean, Text, JSON, DateTime
+    from sqlalchemy import Column, Integer, String, Boolean, Text, JSON, DateTime, ForeignKey
+    from sqlalchemy.orm import relationship
     from datetime import datetime
     from flask_login import UserMixin
     from flask_mail import Mail
@@ -13,7 +14,19 @@ db = SQLAlchemy()
 log = setup_logger()
 mail = Mail()
 
+# Association table for many-to-many relationship between Blog and Tag
+tags = db.Table('tags',
+    Column('tag_id', Integer, ForeignKey('tag.id'), primary_key=True),
+    Column('blog_id', Integer, ForeignKey('blog.id'), primary_key=True)
+)
 
+class Tag(db.Model):
+    __tablename__ = 'tag'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(300), nullable=False)
+    
+    # Relationship to blogs
+    blogs = relationship('Blog', secondary=tags, back_populates='tags')
 class Blog(db.Model):
     __tablename__ = 'blog'
     id = Column(Integer, primary_key=True)
@@ -28,6 +41,9 @@ class Blog(db.Model):
     date = Column(DateTime, default=datetime.now())
     images = Column(JSON)
 
+    # Relationship to tags
+    tags = relationship('Tag', secondary=tags, back_populates='blogs')
+    
 class Pincode(db.Model):
     __tablename__ = 'pincode'
     id = Column(Integer, primary_key=True)

@@ -4,6 +4,51 @@ const currentUrl = window.location.pathname;
 // console.log(currentUrl.split("/")[2]);
 const uid = currentUrl.split("/")[2];
 
+// Delete Tags
+function tagDelete(tagName) {
+    fetch('/delete-tag', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 'tagName': tagName, 'uid': uid }),
+    }).then(response => response.json()).then(data => {
+        if (data['success'] === true) {
+            alert('Tag deleted successfully!');
+        } else {
+            alert('An error occurred: ' + data['message']);
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// save tags
+function tagSave(blogId) {
+    var tags = $("#tags").val();
+    fetch("/save-tags", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tags: tags, uid: blogId }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        // if success = true alert
+        if (data['success'] == true) {
+            alert(data['message']);
+        }
+        // if success = false alert
+        if (data['success'] == false) {
+            alert(data['message']);
+        }
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    })
+}
 // delete image
 function deleteImage(imageName) {
     fetch('/delete-image', {
@@ -54,7 +99,7 @@ function saveImage() {
 
 
 
-// Handle Submit Button Click
+// Handle Submit Button Click for content save
 const normalizeContent = (text) => text.normalize("NFC");
 
 $('#submitContent').click(function() {
@@ -75,29 +120,6 @@ $('#submitContent').click(function() {
         console.error('Error:', error);
     });
 });
-
-
-// $('#submitContent').click(function() {
-//     const content = $('#text-input').html();
-//     console.log(content);
-//     fetch('/submit-content', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ content: content, uid: uid }),
-//     }).then(response => response.json()).then(data => {
-//         if (data['success'] == false) {
-//             alert('An error occurred: ' + data['error']);
-//         } else {
-//             alert('Content submitted successfully!');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// });
-
 
 
 

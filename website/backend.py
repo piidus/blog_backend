@@ -3,7 +3,7 @@ try:
     from flask import Blueprint, render_template, current_app, request, flash, jsonify, send_from_directory
     import uuid, os, json
     from werkzeug.utils import secure_filename
-    from .models import db, Pincode, log, Blog
+    from .models import db, Pincode, log, Blog, Tag
 except Exception as e:
     log.error(e)
 
@@ -139,7 +139,6 @@ def blog_page(blog_id):
     # get all pincode unique only
     all_pincode = Pincode.query.with_entities(Pincode.pincode).filter(Pincode.statename == "WEST BENGAL").distinct().all()
     # all_pincode = Pincode.query.filter(Pincode.statename == "WEST BENGAL").all()
-    # print(all_pincode)
     # images list
     if blog_details.images:
         images = json.loads(blog_details.images)
@@ -148,7 +147,10 @@ def blog_page(blog_id):
         image_urls = [value for key, value in images.items()]
     else:
         image_urls = []  # Collect all image URLs
-    data = {'blog_details': blog_details, 'all_pincode': all_pincode, 'image_urls': image_urls}
+    # return tags
+    all_tags = [tag.name for tag in blog_details.tags]
+    print(type(all_tags))
+    data = {'blog_details': blog_details, 'all_pincode': all_pincode, 'image_urls': image_urls,'all_tags': all_tags}
     return render_template('blog/blog-writer.html', data=data)
 
 @backend.route('/get-postoffice', methods=[ 'POST'])
@@ -212,4 +214,58 @@ def save_content():
             return jsonify({'success': False, 'message': 'Something went wrong!'}), 500
         else:
             return jsonify({'success': True, 'message': 'Content saved successfully!'}), 200
+
+
+# save tags
+@backend.route('/save-tags', methods=[ 'POST'])
+def save_tags():
+    request_data = request.get_json()
+    # print(request_data)
+    tags = request_data['tags']
+    uid = request_data['uid']
+    if '0' in [tags, uid]:
+        return jsonify({'success': False, 'message': 'All fields are required!'}), 400
+    else:
+        # try to save tags first
+        try:
+            tag = Tag(name=tags)
+            db.session.add(tag)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+            return jsonify({'success': False, 'message': 'Something went wrong!'}), 500
+        else:
+            try:
+                selected_blog = Blog.query.filter(Blog.u_id == uid).first()
+                selected_blog.tags.append(tag)
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                print(e)
+                return jsonify({'success': False, 'message': 'Something went wrong!'}), 500
+            else:
+                return jsonify({'success': True, 'message': 'Tags saved successfully!'}), 200   
+        
+
+
+# delete tags
+@backend.route('/delete-tag', methods=[ 'POST'])
+def delete_tag():
+    request_data = request.get_json()
+    # print(request_data)
+    tagname = request_data['tagName']
+    uid = request_data['uid']
+    # find tag by name by  blog uid then delete
+    blog = Blog.query.filter(Blog.u_id == uid).first()
+    tag = Tag.query.filter(Tag.name == tagname).first()
+    if blog and tag and tag in blog.tags:
+        blog.tags.remove(tag)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Tag deleted successfully!'}), 200
+    else:
+        return jsonify({'success': False, 'message': 'Something went wrong!'}), 500
+    
+
+
 
