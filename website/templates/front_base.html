@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- not use bootstrap -->
+     <link rel="stylesheet" href="{{ url_for('static', filename='front/base.css') }}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar start -->
+    <nav class="navbar">
+        <div class="navbar-brand">MySite</div>
+        
+        <!-- Hamburger menu icon for mobile -->
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        
+        <!-- Navbar links -->
+        <div class="navbar-links" id="navbar-links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          
+          <!-- Dropdown menu -->
+          <div class="dropdown">
+            <a href="#">Services</a>
+            <div class="dropdown-content">
+              <a href="#service1">Service 1</a>
+              <a href="#service2">Service 2</a>
+              <a href="#service3">Service 3</a>
+            </div>
+          </div>
+          
+          <!-- Search bar -->
+          <div class="search-bar">
+            <input type="text" placeholder="Search...">
+          </div>
+        </div>
+    </nav>
+    <!-- Navbar end -->
+
+    <!-- Main Content Section -->
+    <section class="content-wrapper">
+        {% block body %}{% endblock %}
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024 MySite. All rights reserved.</p>
+    </footer>
+    {% block js %}{% endblock %}
+    <script src="{{ url_for('static', filename='front/base.js') }}"></script>
+</body>
+</html>

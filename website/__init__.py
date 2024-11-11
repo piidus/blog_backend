@@ -28,6 +28,9 @@ def create_app():
     from .auth import auth
     app.register_blueprint(auth, url_prefix='/')
 
+    from .frontend import frontend
+    app.register_blueprint(frontend, url_prefix='/')
+
     # app.logger.info("Logger has been set up and is writing to %s", app.config['LOG_FILENAME'])
 
     # Initialize the login manager
