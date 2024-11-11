@@ -67,16 +67,13 @@ def save_image():
         # convert file name with id
         file_name = (str(blog_id) + secure_filename(request_data.filename)).replace('\\', '/')
         # save image
-        # save to image folder
-        request_data.save(os.path.join(current_app.config['IMAGE_FOLDER'], file_name))
+        
         # image name save as json
         # check if any image exists then get the image serial no and add 1
         if blog.images:
-            images = blog.images
             existing_json = json.loads(blog.images)
-            
-            # print(images)
-            if len(images) > 0:
+            if len(existing_json) > 0:
+                print(existing_json)
                 last_key = [key for key in existing_json.keys()][-1]
                 serial_no = int(last_key) + 1
                 existing_json.update({str(serial_no): file_name})
@@ -93,9 +90,11 @@ def save_image():
         except Exception as e:
             db.session.rollback()
             return jsonify({'success': False, 'message': 'Something went wrong!'}), 500
-        # print(request_data)
+        else:
+            # save to image folder
+            request_data.save(os.path.join(current_app.config['IMAGE_FOLDER'], file_name))
+            return jsonify({'success': True, 'message': 'Image saved successfully!'}), 200
         
-        return jsonify({'success': True, 'message': 'Image saved successfully!'}), 200
 # delete image
 @backend.route('/delete-image', methods=['POST'])
 def delete_image():
